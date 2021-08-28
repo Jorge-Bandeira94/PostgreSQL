@@ -1,0 +1,20 @@
+-- Inserindo dados
+
+-- INSERT INTO tipos_produtos (descricao) VALUES ('Computador');
+-- INSERT INTO tipos_produtos (descricao) VALUES ('Impressora');
+-- INSERT INTO tipos_produtos (descricao) VALUES ('Acessórios');
+-- SELECT * FROM tipos_produtos;
+
+-- INSERT INTO produtos (descricao, preco, codigo_tipo) VALUES ('Notebook dell 1544', '2345.67', '1');
+-- INSERT INTO produtos (descricao, preco, codigo_tipo) VALUES ('IPR Jato de Tinta', '560.50', '2');
+-- INSERT INTO produtos (descricao, preco, codigo_tipo) VALUES ('Mouse sem fio', '45.00', '3');
+
+-- SELECT * FROM produtos;
+
+-- UPDATE produtos SET preco = '2345,67' WHERE codigo_tipo = 1;   -- Foi necessario alterar os precos por que estavam em reais, tive que trocar ponto por virgula
+-- UPDATE produtos SET preco = '560,50' WHERE codigo_tipo = 2;
+-- UPDATE produtos SET preco = '45,00' WHERE codigo_tipo = 3;
+-- SELECT * FROM produtos;
+
+-- INSERT INTO pacientes (nome, endereço, bairro, cidade, estado, cep, data_nascimento) VALUES ('José da Silva', 'Rua da Paz 44', 'Nova Lima', 'São Paulo', 'SP', '5667090', '1978/04/15');
+-- SELECT * FROM pacientes;

@@ -1,0 +1,85 @@
+-- # Filtrando consultas com WHERE
+-- CREATE TABLE tipos_produtos (
+-- id SERIAL PRIMARY KEY,
+-- descricao VARCHAR(50) NOT NULL
+-- );
+
+-- CREATE TABLE produtos (
+-- id SERIAL PRIMARY KEY,
+-- descricao VARCHAR(50) NOT NULL,
+-- preco MONEY NOT NULL,
+-- codigo_tipo INT REFERENCES tipos_produtos(id) NOT NULL
+-- );
+
+-- CREATE TABLE fabricante (
+-- id SERIAL PRIMARY KEY,
+-- nome VARCHAR(50) NOT NULL
+-- );
+
+-- INSERT INTO tipos_produtos (descricao) VALUES ('Compurador');
+-- INSERT INTO tipos_produtos (descricao) VALUES ('Impressora');
+-- INSERT INTO produtos (descricao, preco, codigo_tipo) VALUES ('MacBook', '1200', '7');
+-- INSERT INTO produtos (descricao, preco, codigo_tipo) VALUES ('Acer Spiron', '3200', '7');
+-- INSERT INTO produtos (descricao, preco, codigo_tipo) VALUES ('DeskJet 8770', '800', '8');
+-- INSERT INTO fabricante (nome) VALUES ('Apple');
+-- INSERT INTO fabricante (nome) VALUES ('Acer');
+-- INSERT INTO fabricante (nome) VALUES ('HP');
+
+-- ALTER TABLE produtos ADD fabricante INT;
+-- UPDATE produtos SET fabricante = 1 WHERE id = 3;
+-- UPDATE produtos SET fabricante = 2 WHERE id = 4;
+-- UPDATE produtos SET fabricante = 3 WHERE id = 5;
+
+-- ALTER TABLE public.produtos                              -- (É possível fazer essa modificação com o mouse selecionando a tabela na barra lateral)
+-- ADD CONSTRAINT produtos_fabricante_fkey FOREIGN KEY (fabricante)
+-- REFERENCES public.fabricante (id)
+
+-- SELECT * FROM produtos WHERE codigo_tipo = 7;
+-- SELECT * FROM produtos WHERE descricao = 'MacBook';
+-- SELECT * FROM produtos WHERE preco <= 'R$500';
+
+-- # Consultas em multiplas tabelas (Junção de tabelas - produto cartesiano)
+-- SELECT p.descricao AS "Nome" , p.preco AS "Preço", tp.descricao AS "Descrição"   -- Os ALIAS no postgree são dados por aspas duplas "".
+-- FROM produtos AS p, tipos_produtos AS tp 
+-- WHERE p.codigo_tipo = tp.id;
+
+-- Demais Junções de tabela
+-- SELECT * FROM produtos LEFT OUTER JOIN fabricante ON produtos.fabricante = fabricante.id;
+-- SELECT * FROM produtos RIGHT OUTER JOIN fabricante ON produtos.fabricante = fabricante.id;
+-- SELECT * FROM produtos LEFT OUTER JOIN fabricante ON produtos.fabricante = fabricante.id UNION SELECT * FROM produtos RIGHT OUTER JOIN fabricante ON produtos.fabricante = fabricante.id;
+-- SELECT * FROM produtos CROSS JOIN fabricante;
+
+-- # Função de agregação
+-- SELECT MAX(preco) FROM produtos;
+-- SELECT MIN(preco) FROM produtos;
+-- SELECT AVG(preco) FROM produtos;              -- Não da para fazer com o dado do tipo MONEY
+
+-- SELECT COUNT(preco) AS "Quantidade" FROM produtos WHERE codigo_tipo = 7;
+-- SELECT codigo_tipo, MAX(preco) FROM produtos GROUP BY codigo_tipo;         -- o MAIOR PREÇO PARA TAL PRODUTO DA CATEGORIA 7, O MAIOR PREÇO DA CATEGORIA 8 E ETC.
+-- SELECT codigo_tipo, MAX(preco) FROM produtos GROUP BY codigo_tipo HAVING MAX(preco) > 1400;          -- dA ERRO POR CONTA DO TIPO MONEY
+
+
+-- # Funçoes de agrupamento e ordenação
+-- SELECT p.descricao AS "Nome", f.nome AS "Fabricante", SUM(p.codigo_tipo) AS "Quantidade"
+-- FROM produtos AS p, fabricante AS f
+-- WHERE p.fabricante = f.id
+-- GROUP BY p.descricao, f.nome;
+
+-- SELECT id, descricao, preco, codigo_tipo FROM produtos ORDER BY preco ASC;   -- asc ou desc (posso limitar a tabela colocando no final LIMIT 3, OU QUALQUER OUTRO NUMERO PARA LIMITAR O NUMERO DE LINHAS D ATABELA)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

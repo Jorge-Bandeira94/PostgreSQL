@@ -1,0 +1,202 @@
+-- Quando o SQL vem do dbdiagram, vem formatado de uma forma diferente, então ond ehouver INT para primary key substituir por SERIAL
+-- assim como onde houver DATETIME por DATE. Além disso, colocar o limite dos VARCHAR(), Podem ser retiradas também as "" que são dispensaveis no postgres
+
+--CREATE DATABASE projeto01;
+
+
+
+-- CREATE TABLE "categoria" (
+--  "id" SERIAL PRIMARY KEY,
+--  "genero" VARCHAR NOT NULL
+--);
+
+--CREATE TABLE "filmes" (
+--  "id" SERIAL PRIMARY KEY,
+--  "nome" VARCHAR NOT NULL,
+--  "id_categoria" INT NOT NULL
+--);
+
+--CREATE TABLE "dvd" (
+--  "id" SERIAL PRIMARY KEY,
+--  "id_filme" INT NOT NULL,
+--  "volumes_dvd" INT NOT NULL,
+--  "valor" DECIMAL NOT NULL
+--);
+
+--CREATE TABLE "atores" (
+--  "id" SERIAL PRIMARY KEY,
+--  "nome" VARCHAR NOT NULL
+--);
+
+--CREATE TABLE "atores_filme" (
+--  "id" SERIAL PRIMARY KEY,
+--  "id_filme" INT NOT NULL,
+--  "id_ator" INT NOT NULL,
+--  "personagem" VARCHAR NOT NULL
+--);
+
+--CREATE TABLE "cliente" (
+--  "id" SERIAL PRIMARY KEY,
+--  "nome" VARCHAR NOT NULL,
+--  "telefone" VARCHAR NOT NULL,
+--  "endereco" VARCHAR NOT NULL
+--);
+
+--CREATE TABLE "alugado_filme" (
+--  "id" SERIAL PRIMARY KEY,
+--  "id_cliente" INT NOT NULL,
+--  "data" DATE NOT NULL
+--);
+
+--CREATE TABLE "emprestimo_total" (
+--  "id" SERIAL PRIMARY KEY,
+--  "id_filme" INT NOT NULL,
+--  "id_alugado" INT NOT NULL
+--);
+
+--CREATE TABLE "devolucoes" (
+--  "id" SERIAL PRIMARY KEY,
+--  "id_alugado_filme" INT NOT NULL,
+--  "data" DATE NOT NULL
+--);
+
+--CREATE TABLE "devolucao_total" (
+--  "id" SERIAL PRIMARY KEY,
+--  "id_emprestimo_total" INT,
+--  "id_alugado_filme" INT
+--);
+
+--ALTER TABLE "filmes" ADD FOREIGN KEY ("id_categoria") REFERENCES "categoria" ("id");
+
+--ALTER TABLE "dvd" ADD FOREIGN KEY ("id_filme") REFERENCES "filmes" ("id");
+
+--ALTER TABLE "atores_filme" ADD FOREIGN KEY ("id_filme") REFERENCES "filmes" ("id");
+
+--ALTER TABLE "atores_filme" ADD FOREIGN KEY ("id_ator") REFERENCES "atores" ("id");
+
+--ALTER TABLE "alugado_filme" ADD FOREIGN KEY ("id_cliente") REFERENCES "cliente" ("id");
+
+--ALTER TABLE "emprestimo_total" ADD FOREIGN KEY ("id_filme") REFERENCES "filmes" ("id");
+
+--ALTER TABLE "emprestimo_total" ADD FOREIGN KEY ("id_alugado") REFERENCES "alugado_filme" ("id");
+
+--ALTER TABLE "devolucoes" ADD FOREIGN KEY ("id_alugado_filme") REFERENCES "alugado_filme" ("id");
+
+--ALTER TABLE "devolucao_total" ADD FOREIGN KEY ("id_emprestimo_total") REFERENCES "emprestimo_total" ("id");
+
+--ALTER TABLE "devolucao_total" ADD FOREIGN KEY ("id_alugado_filme") REFERENCES "alugado_filme" ("id");
+
+
+
+-- # DML (INSERINDO DADOS) COMEÇAR INSERINDO EM TABELAS SEM CHAVE ESTRANGEIRA (usar a imagem ajuda)
+
+-- INSERT INTO atores (nome) VALUES ('Bread Pit');
+-- INSERT INTO atores (nome) VALUES ('The Rock');
+-- INSERT INTO atores (nome) VALUES ('Robert Patinson');
+
+-- INSERT INTO categoria (genero) VALUES ('Terror');
+-- INSERT INTO categoria (genero) VALUES ('Ação');
+-- INSERT INTO categoria (genero) VALUES ('Comédia');
+
+-- INSERT INTO cliente (nome, telefone, endereco) VALUES ('João de Barros', '33782940', 'Segunda Travessa, 556, Casa 4');
+-- INSERT INTO cliente (nome, telefone, endereco) VALUES ('Maria Aparecida', '88976543', 'Segunda Travessa, 235');
+-- INSERT INTO cliente (nome, telefone, endereco) VALUES ('Roberto Guimarães', '22345678', 'Av. Ribeiro de Brito, 120, Apto 308');
+-- INSERT INTO cliente (nome, telefone, endereco) VALUES ('Fábio Porchat', '87659087', 'R. Capitão Zuzinha, 4335, Apto 106');
+
+
+-- # Tabelas com chaves estrangeiras
+
+-- INSERT INTO filmes (nome, id_categoria) VALUES ('A chama', 2);
+-- INSERT INTO filmes (nome, id_categoria) VALUES ('Jumanji', 3);
+-- INSERT INTO filmes (nome, id_categoria) VALUES ('O Farol', 1);
+-- INSERT INTO filmes (nome, id_categoria) VALUES ('Skyscape', 2);
+
+-- INSERT INTO alugado_filme (id_cliente, data) VALUES (1, '2020/08/18');
+-- INSERT INTO alugado_filme (id_cliente, data) VALUES (2, '2020/10/28');
+-- INSERT INTO alugado_filme (id_cliente, data) VALUES (4, '2021/03/05');
+-- INSERT INTO alugado_filme (id_cliente, data) VALUES (4, '2021/03/05');
+
+
+-- INSERT INTO atores_filme (id_filme, id_ator, personagem) VALUES (1, 1, 'Conde Lisconsin');
+-- INSERT INTO atores_filme (id_filme, id_ator, personagem) VALUES (2, 2, 'Capitão R');
+-- INSERT INTO atores_filme (id_filme, id_ator, personagem) VALUES (3, 3, 'Faroeiro');
+-- INSERT INTO atores_filme (id_filme, id_ator, personagem) VALUES (4, 2, 'Jhonson James');
+
+-- INSERT INTO dvd (id_filme, volumes_dvd, valor) VALUES (1, 1, '10');
+-- INSERT INTO dvd (id_filme, volumes_dvd, valor) VALUES (2, 1, '8');
+-- INSERT INTO dvd (id_filme, volumes_dvd, valor) VALUES (3, 2, '12');
+-- INSERT INTO dvd (id_filme, volumes_dvd, valor) VALUES (4, 2, '16');
+
+-- INSERT INTO devolucoes (id_alugado_filme, data) VALUES (1, '2020/08/25');
+-- INSERT INTO devolucoes (id_alugado_filme, data) VALUES (2, '2020/11/07');
+-- INSERT INTO devolucoes (id_alugado_filme, data) VALUES (3, '2021/03/15');
+-- INSERT INTO devolucoes (id_alugado_filme, data) VALUES (6, '2021/03/16');
+
+-- INSERT INTO emprestimo_total (id_filme, id_alugado) VALUES (1, 1);
+-- INSERT INTO emprestimo_total (id_filme, id_alugado) VALUES (2, 2);
+-- INSERT INTO emprestimo_total (id_filme, id_alugado) VALUES (3, 3);
+-- insert into emprestimo_total (id_filme, id_alugado) VALUES (4, 6);
+
+
+-- INSERT INTO devolucao_total (id_emprestimo_total, id_alugado_filme) VALUES (4, 1);
+-- INSERT INTO devolucao_total (id_emprestimo_total, id_alugado_filme) VALUES (5, 2);
+-- INSERT INTO devolucao_total (id_emprestimo_total, id_alugado_filme) VALUES (6, 3);
+-- INSERT INTO devolucao_total (id_emprestimo_total, id_alugado_filme) VALUES (10, 6);
+
+
+
+-- Para a consulta abaixo precisei linkar todas as chaves entre as tabelas citadas, tabelas que ficam sem likar pelo WHERE causa multiplicidade
+-- de dados na resposta.
+
+-- SELECT c.nome, c.telefone, f.nome AS "Filme", a.data AS "Alugado em:", dv.valor AS "Preço", dev.data AS "Devolução em:" 
+-- FROM cliente AS c, filmes AS f, alugado_filme AS a, devolucoes AS dev, dvd AS dv, emprestimo_total AS emp
+-- WHERE a.id_cliente = c.id AND f.id = emp.id_filme AND emp.id_alugado = a.id AND dv.id_filme = f.id AND dev.id_alugado_filme = a.id;
+
+--SELECT SUM(valor) AS "Soma" FROM dvd; -- Soma de todos os valores de todos os DVDs
+--SELECT MAX(valor) AS "Filme mais caro" FROM dvd;
+--SELECT MIN(valor) AS "Filme mais barato" FROM dvd;
+
+-- Elencando o preco dos filmes e depois encontrando só o maior valor entre os filmes
+
+-- SELECT f.nome AS "Nome do filme", MAX(d.valor) AS "Filme mais caro" 
+-- FROM dvd AS d, filmes AS f
+-- WHERE d.id_filme = f.id
+-- GROUP BY f.nome;
+
+-- SELECT f.nome, d.valor 
+-- FROM dvd AS d, filmes AS f 
+-- WHERE valor IN (SELECT MAX(valor) FROM dvd) AND d.id_filme = f.id;
+
+
+-- # Encontrar todos os filmes que determinado ator atua, seus generos e nome de personagens
+
+-- SELECT a.nome AS "Ator", f.nome AS "Filme", c.genero AS "Gênero", af.personagem 
+-- FROM filmes AS f, categoria AS c, atores_filme AS af, atores AS a
+-- WHERE af.id_filme = f.id AND af.id_ator = a.id AND f.id_categoria = c.id AND a.nome = 'The Rock';
+
+-- # Encontrando todos os filmes de ação com seus atores e personagens
+-- SELECT a.nome AS "Ator", f.nome AS "Filme", c.genero AS "Gênero", af.personagem 
+-- FROM filmes AS f, categoria AS c, atores_filme AS af, atores AS a
+-- WHERE af.id_filme = f.id AND af.id_ator = a.id AND f.id_categoria = c.id AND c.genero = 'Ação';
+
+
+-- Filmes alugados por clientes com data, valor e atrasos
+SELECT c.nome, c.telefone, f.nome AS "Filme", a.data AS "Alugado em:", dv.valor AS "Preço", dev.data AS "Devolução em:", emp.id "Id emprestimo"
+FROM cliente AS c, filmes AS f, alugado_filme AS a, devolucoes AS dev, dvd AS dv, emprestimo_total AS emp
+WHERE a.id_cliente = c.id AND f.id = emp.id_filme AND dev.id_alugado_filme = a.id AND emp.id_alugado = a.id AND dv.id_filme = f.id;
+
+-- SELECT c.nome AS "Cliente", f.nome AS "Filme", dev.data AS "Devolução"
+-- FROM cliente AS c, filmes AS f, devolucoes AS dev, alugado_filme AS a, emprestimo_total AS emp
+-- WHERE dev.id_alugado_filme = a.id AND a.id_cliente = c.id AND emp.id_filme = f.id AND emp.id_alugado = a.id; 
+
+-- Soma dos valores dos filmes alugados por cada pessoas
+-- SELECT c.nome AS "Cliente", SUM(d.valor) AS "Preço"
+-- FROM cliente AS c, emprestimo_total AS emp, alugado_filme AS a, dvd AS d, filmes AS f
+-- WHERE emp.id_alugado = a.id AND a.id_cliente = c.id AND f.id = d.id_filme AND d.id_filme = f.id AND emp.id_filme = f.id
+-- GROUP BY c.nome;
+
+
+
+
+
+

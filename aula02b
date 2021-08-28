@@ -1,0 +1,108 @@
+-- # Temos que deixar todo o codigo comentado como -- pois o Pstgree executa todo o arquivo e não linha individuais.
+-- # NOT NULL e AUTO_INCREMENT não servem aqui quando usamos SERIAL, além disos, a PRIMARY KEY() só funciona no MySQL, no POSTGREE precisa ser colocado ao lado do atributo como a seguir
+
+-- CREATE TABLE tipos_produtos(
+-- id SERIAL PRIMARY KEY,                        -- SERIAL é o dado do tipo INT + AUTO_INCREMENT
+-- descricao CHARACTER VARYING(50) NOT NULL      -- A sintax de VARCHAR() aqui é desta forma
+-- );
+
+-- CREATE TABLE produtos(
+-- id SERIAL PRIMARY KEY,
+-- descricao CHARACTER VARYING(50) NOT NULL,
+-- preco MONEY NOT NULL,
+-- codigo_tipo INT REFERENCES tipos_produtos(id) NOT NULL
+-- );
+
+-- As imagens de modelagem no MySQL são usadas como documentação, aquela imagem pode ser usada
+-- para escrever o script no postgree.
+
+-- # Inserindo dados
+
+-- INSERT INTO tipos_produtos (descricao) VALUES ('Computador');
+-- INSERT INTO tipos_produtos (descricao) VALUES ('Impressora');
+-- INSERT INTO tipos_produtos (descricao) VALUES ('Acessórios');
+-- SELECT * FROM tipos_produtos;
+
+-- INSERT INTO produtos (descricao, preco, codigo_tipo) VALUES ('Notebook dell 1544', '2345.67', '1');
+-- INSERT INTO produtos (descricao, preco, codigo_tipo) VALUES ('IPR Jato de Tinta', '560.50', '2');
+-- INSERT INTO produtos (descricao, preco, codigo_tipo) VALUES ('Mouse sem fio', '45.00', '3');
+
+
+-- # Comandos DQL (SELECT)
+-- SELECT * FROM produtos;
+
+-- UPDATE produtos SET preco = '2345,67' WHERE codigo_tipo = 1;   -- Foi necessario alterar os precos por que estavam em reais, tive que trocar ponto por virgula
+-- UPDATE produtos SET preco = '560,50' WHERE codigo_tipo = 2;
+-- UPDATE produtos SET preco = '45,00' WHERE codigo_tipo = 3;
+
+
+-- # Tipos de erros que podem ocorrer (colunas que não existem)
+
+-- SELECT p.descricao, t.descricao, p.prreeeccoo FROM produtos AS p, tipos_produtos AS t WHERE p.codigo_tipo = t.id;
+
+-- ERROR:  column p.prreeeccoo does not exist
+-- LINE 37: SELECT p.descricao, t.descricao, p.prreeeccoo FROM produtos ...
+--                                            ^
+-- SQL state: 42703
+-- Character: 1787
+
+-- #Comandos DML (UPDATE, DELET)
+-- UPDATE tipos_produtos SET descricao = 'Nobreak' WHERE id = 2; -- Sem WHERE, todas as descrições serão nobreaks
+-- SELECT * FROM tipos_produtos;
+-- UPDATE produtos SET descricao = 'ATLUS899', preco = '580,00' WHERE codigo_tipo = 2;
+-- SELECT * FROM produtos;
+-- DELETE FROM produtos WHERE codigo_tipo >= 3;
+-- SELECT * FROM produtos;
+
+-- # Comandos DDL (CREATE, ALTER, DROP)
+
+-- CREATE TABLE produtos(
+-- id SERIAL PRIMARY KEY,
+-- descricao CHARACTER VARYING(50) NOT NULL,
+-- preco MONEY NOT NULL,
+-- codigo_tipo INT REFERENCES tipos_produtos(id) NOT NULL
+-- );
+
+-- Alterando uma tabela (adicionando novos atributos)
+-- ALTER TABLE tipos_produtos ADD peso DECIMAL(4,2);
+-- SELECT * FROM tipos_produtos;
+-- UPDATE tipos_produtos SET peso = '6' WHERE id = 1;
+-- UPDATE tipos_produtos SET peso = '0.5' WHERE id = 3;
+-- UPDATE tipos_produtos SET peso = '10' WHERE id = 2;
+-- SELECT * FROM tipos_produtos;
+
+-- Deletando a tabela (caso não haja chaves estrangeiras usando essa tabela)
+-- DROP TABLE tipos_produtos;
+-- Não da pra deleter banco de dados que estajm sendo utilizados
+
+-- # Comandos DCL (permissões)
+-- criar um usuario com senha
+-- CREATE USER estagiario WITH PASSWORD '123456';
+
+-- conceder privilegios para o usuario criado para interagir com a tabela especifica
+-- GRANT ALL on tipos_produtos TO estagiario;
+-- Dando ao usuario a permissão de usar select usando os IDs da tabela tipos_produtos
+-- é necessario usar _id_seq na tabela alvo para designar que pode ser usada
+-- GRANT USAGE, SELECT ON SEQUENCE tipos_produtos_id_seq TO estagiario;
+-- Removendo os privilegios
+-- REVOKE ALL on tipos_produtos FROM estagiario;
+-- REVOKE SELECT ON SEQUENCE tipos_produtos_id_seq FROM estagiario;
+-- Permissões apenas para leitura
+-- GRANT SELECT ON tipos_produtos TO estagiario;
+-- REVOKE select on tipos_produtos FROM estagiario
+-- Deletar usuario (para deletar, ele precisa não ter mais permissões)
+-- DROP USER estagiario;
+
+-- # Comandos DTL (begin commit e rollback) no MySQL, em vez de BEGIN TRANSACTION é START TRANSACTION
+-- Os dados só são gravados no banco a partir do BEGIN finalizando com commit
+-- BEGIN TRANSACTION;
+-- INSERT INTO tipos_produtos (descricao) VALUES ('anexos');
+-- COMMIT;
+
+-- Usando ROLLBACK para algum problema onde um commit não é excutado (pois commit grava os dados e rollback não consegue desfazer)
+-- BEGIN TRANSACTION;
+-- INSERT INTO tipos_produtos (descricao) VALUES ('A');
+-- INSERT INTO tipos_produtos (descricao) VALUES ('B');
+
+-- ROLLBACK;  -- Os dados acima foram descartados
+-- SELECT * FROM tipos_produtos;
